@@ -1,22 +1,17 @@
-.contenedor {
-    max-height: 100px; /* Ajusta la altura máxima según tus necesidades */
-    overflow: hidden;
-    position: relative;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    font-family: Montserrat;
 }
 
-.contenedor p {
-    margin: 0;
-    padding: 0;
-    line-height: 1.2em; /* Ajusta según sea necesario */
-    max-height: 3.6em; /* (1.2em * 3) - Ajusta según sea necesario (número de líneas * altura de línea) */
-    overflow: hidden;
+html {
+    background-color: #212529;
 }
 
-.contenedor::after {
-    content: '...';
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    padding-left: 20px; /* Ajusta según sea necesario para espacio entre el texto y los puntos suspensivos */
-    background: linear-gradient(to right, rgba(255, 255, 255, 0), white 50%);
+ul {
+    list-style: none;
+}
+
+.item p::first-letter {
+    text-transform: uppercase;
 }

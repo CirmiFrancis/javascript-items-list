@@ -1,113 +1,53 @@
-// Creo una clase llamada item.
-// La clase va a tener dos propiedades: titulo y texto, cada uno con sus metodos para ingresar.
-// La clase va a tener una propiedad extra: un id unico e irrepetible.
-// Voy a tener un array vacio. Los nuevos items que vaya creando puedo agregarlos a este array.
-// Mientras los agrego al array, deberia de haber un codigo que tambien incorpore al html un contenedor con esa informacion.
+const inputTitle = document.getElementById('inputTitle');
+const inputText  = document.getElementById('inputText' );
+const btnAdd     = document.getElementById('btnAdd'    );
+const btnDelete  = document.getElementById('btnDelete' );
+const itemsList  = document.getElementById('itemsList' );
 
-let lista = [];
-
-class Item {
-    static contadorId = 0;
-
-    constructor(titulo, texto) {
-      this.id = Item.contadorId++;
-      this.titulo = titulo;
-      this.texto = texto;
-    }
-  
-    agregarItem() {
-        lista.push(this);
-    }
-
-    eliminarItem() {
-        lista = lista.filter(item => item.id !== this.id);
-    }
+// LENGTH ITEMS
+function lengthItems() {
+    const divItemCount = document.getElementById('divItemCount');
+    const itemsLength = document.querySelectorAll('.item').length;
+    divItemCount.textContent = `ÍTEMS: ${itemsLength}`;
 }
 
-// Se crean los items
-const item1 = new Item("Quiero comer",    "Ayer no cené y ahora me duele la panza del hambre que tengo.");
-const item2 = new Item("Tengo sueño",     "Estuve todo el día laburando y me agarró pachorra jaja"      );
-const item3 = new Item("Me tengo que ir", "Qué lástima pero adiós, me despido de ti y me voy..."        );
+// ADD ITEM
+btnAdd.addEventListener('click', () => {
+    (inputTitle.value !== '' && inputText.value !== '') ? addItem(inputTitle.value, inputText.value) : alert('Completa ambos campos.');
+})
 
-// Se agregan los items a la lista de items
-// item1.agregarItem();
-// item2.agregarItem();
-// item3.agregarItem();
-
-// Se eliminan los items de la lista de items
-// item1.eliminarItem();
-// item2.eliminarItem();
-// item3.eliminarItem();
-
-function lengthLista() {
-    return lista.length;
-}
-
-crearDivsDeItems();
-
-// ============================ DOM ============================
-
-// AGREGAR ITEM
-document.getElementById('agregarItem').addEventListener('click', agregarItem);
-
-function mostrarTitulo() {
-    let tituloItem = document.getElementById('tituloItem').value;
-    return tituloItem;
-}
-
-function mostrarTexto() {
-    let textoItem = document.getElementById('textoItem').value;
-    return textoItem;
-}
-
-function agregarItem(e) {
-    e.preventDefault();
-
-    if (mostrarTitulo() !== '' && mostrarTexto() !== ''){
-        const item = new Item(mostrarTitulo(), mostrarTexto());
-        lista.push(item);
-        crearDivsDeItems();
-    }
-}
-
-function crearDivsDeItems() {
-
-    let listaItems = document.getElementById('listaItems');
-
-    // Detectamos los divs activos y los eliminamos para luego volver a recorrer el array con las notas. Esto evita que se repitan items del array que ya habian sido mostrados.
-    let itemsDivActivo = document.getElementsByClassName('divActivo');
-    let arrayDivActivo = Array.from(itemsDivActivo);
-
-    arrayDivActivo.forEach(function(item) {
-        item.parentNode.removeChild(item);
-    });
-
-
-    //
-    lista.forEach(item => {
-        const divItem = document.createElement("div");
-        divItem.classList.add('divActivo');
-        divItem.innerHTML=
-        `
-        <div class="container text-dark border border-dark rounded py-3 my-2">
-            <div class="row">
-                <div class="col-11 d-flex flex-column justify-content-start align-items-start text-start border-end border-dark">
-                    <div class="row">
-                        <h3>${item.titulo}</h3>
-                    </div>
-                    <div class="row">
-                        <p class="fs-5 m-0">${item.texto}</p>
-                    </div>
+function addItem(title, text) {
+    const divItem = document.createElement('div');
+    divItem.innerHTML = 
+    `
+        <li class="item container-fluid border border-dark rounded mb-2">
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="col-10 col-md-11 text-start border-end border-dark">
+                    <h3 class="overflow-auto text-uppercase pt-3 m-0">${title}</h3>
+                    <p class="overflow-auto pb-3 m-0">${text}</p>
                 </div>
-                <div class="col-1 text-end d-flex justify-content-evenly align-items-center">
-                    <img src="./assets/x.svg" width="28" alt="">
+                <div class="col-2 col-md-1">
+                    <button id="btnDelete" class="rounded">X</button>
                 </div>
-            </div>            
-        </div>
-        `;
-        
-        listaItems.appendChild(divItem);
-    });
+            </div>
+        </li>
+    `;
+
+    itemsList.appendChild(divItem);
+    inputTitle.value = '';
+    inputText.value = '';
+    lengthItems();
 }
 
-// ELIMINAR ITEM
+// REMOVE ITEM
+itemsList.addEventListener('click', (e) => {
+    if (e.target.id === 'btnDelete') {
+        e.target.closest('.item').remove()
+        lengthItems();
+    }
+})
+
+// AGREGAR UN 'BUSCADOR DE ÍTEM'
+// LA BÚSQUEDA TIENE QUE COINCIDIR CON EL TÍTULO DEL ÍTEM
+// SE ACTUALIZA A MEDIDA QUE ESCRIBO
+// 'DISPLAY: NONE' O 'VISIBILITY: HIDDEN', PARA AQUELLOS QUE NO COINCIDA CON LA BÚSQUEDA
