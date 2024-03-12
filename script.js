@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', loadLocalStorage);
 // LENGTH ITEMS
 function lengthItems() {
     const divItemCount = document.getElementById('divItemCount');
-    const itemsLength = document.querySelectorAll('.item').length;
+    const itemsLength = document.querySelectorAll('.itemActive').length;
     divItemCount.textContent = `ÍTEMS: ${itemsLength}`;
 };
 
@@ -28,7 +28,7 @@ function addItem(title, text, boolean) {
     const divItem = document.createElement('div');
     divItem.innerHTML = 
     `
-        <li class="item container-fluid border border-dark rounded mb-2">
+        <li class="item itemActive container-fluid border border-dark rounded mb-2">
             <div class="row d-flex justify-content-center align-items-center py-2">
                 <div class="col-10 col-md-11 text-start border-end border-dark">
                     <h3 class="title overflow-auto text-uppercase m-0">${title}</h3>
@@ -43,7 +43,6 @@ function addItem(title, text, boolean) {
     itemsList.appendChild(divItem);
     inputTitle.value = '';
     inputText.value = '';
-    searchItem.value = '';
     lengthItems();
     boolean ? sweetAlert("Item agregado.", "success") : '';
 };
@@ -62,6 +61,7 @@ itemsList.addEventListener('click', (e) => {
 searchItem.addEventListener('input', () => {
     const searchString = searchItem.value.trim().toLowerCase();
     search(searchString);
+    lengthItems();
 });
 
 function search(searchString) {
@@ -69,7 +69,14 @@ function search(searchString) {
     
     array.forEach(element => {
         const containsString = element.textContent.toLowerCase().includes(searchString);
-        containsString ? element.closest('.item').classList.remove('filteredText') : element.closest('.item').classList.add('filteredText');
+        if (containsString) {
+            element.closest('.item').classList.add('itemActive'); // activo, facilita calcular la cantidad al filtrar
+            element.closest('.item').classList.remove('filteredText'); // muestra el item
+        }
+        else {
+            element.closest('.item').classList.add('filteredText'); // no muestra el item
+            element.closest('.item').classList.remove('itemActive'); // no activo, facilita calcular la cantidad de al filtrar
+        }
     });
 };
 
@@ -100,7 +107,7 @@ function sweetAlert(title, icon) {
     Swal.fire({
         toast: true,
         position: "bottom-end",
-        timer: 2000,
+        timer: 1000,
         title: title,
         icon: icon,
         showConfirmButton: false,
