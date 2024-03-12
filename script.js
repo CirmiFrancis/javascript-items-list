@@ -1,20 +1,28 @@
 const inputTitle = document.getElementById('inputTitle');
 const inputText  = document.getElementById('inputText' );
 const btnAdd     = document.getElementById('btnAdd'    );
-const btnDelete  = document.getElementById('btnDelete' );
 const itemsList  = document.getElementById('itemsList' );
+const searchItem = document.getElementById('searchItem');
+
+document.addEventListener('DOMContentLoaded', loadLocalStorage);
 
 // LENGTH ITEMS
 function lengthItems() {
     const divItemCount = document.getElementById('divItemCount');
     const itemsLength = document.querySelectorAll('.item').length;
     divItemCount.textContent = `ÍTEMS: ${itemsLength}`;
-}
+};
 
 // ADD ITEM
 btnAdd.addEventListener('click', () => {
-    (inputTitle.value !== '' && inputText.value !== '') ? addItem(inputTitle.value, inputText.value) : alert('Completa ambos campos.');
-})
+    if (inputTitle.value !== '' && inputText.value !== '') {
+        addItem(inputTitle.value, inputText.value);
+        saveLocalStorage();
+    } 
+    else {
+        alert('Completa ambos campos.');
+    }
+});
 
 function addItem(title, text) {
     const divItem = document.createElement('div');
@@ -23,11 +31,11 @@ function addItem(title, text) {
         <li class="item container-fluid border border-dark rounded mb-2">
             <div class="row d-flex justify-content-center align-items-center">
                 <div class="col-10 col-md-11 text-start border-end border-dark">
-                    <h3 class="overflow-auto text-uppercase pt-3 m-0">${title}</h3>
+                    <h3 class="title overflow-auto text-uppercase pt-3 m-0">${title}</h3>
                     <p class="overflow-auto pb-3 m-0">${text}</p>
                 </div>
-                <div class="col-2 col-md-1">
-                    <button id="btnDelete" class="rounded">X</button>
+                <div class="col-2 col-md-1 d-flex justify-content-center">
+                    <button class="btnDelete border-0 rounded text-danger bg-white fs-1">X</button>
                 </div>
             </div>
         </li>
@@ -36,18 +44,53 @@ function addItem(title, text) {
     itemsList.appendChild(divItem);
     inputTitle.value = '';
     inputText.value = '';
+    searchItem.value = '';
     lengthItems();
-}
+};
 
 // REMOVE ITEM
 itemsList.addEventListener('click', (e) => {
-    if (e.target.id === 'btnDelete') {
-        e.target.closest('.item').remove()
+    if (e.target.classList.contains('btnDelete')) {
+        e.target.closest('.item').parentElement.remove();
+        saveLocalStorage();
         lengthItems();
     }
-})
+});
 
-// AGREGAR UN 'BUSCADOR DE ÍTEM'
-// LA BÚSQUEDA TIENE QUE COINCIDIR CON EL TÍTULO DEL ÍTEM
-// SE ACTUALIZA A MEDIDA QUE ESCRIBO
-// 'DISPLAY: NONE' O 'VISIBILITY: HIDDEN', PARA AQUELLOS QUE NO COINCIDA CON LA BÚSQUEDA
+// SEARCH ITEM
+searchItem.addEventListener('input', () => {
+    const searchString = searchItem.value.trim().toLowerCase();
+    search(searchString);
+});
+
+function search(searchString) {
+    const array = Array.from(itemsList.querySelectorAll('.title'));
+    
+    array.forEach(element => {
+        const containsString = element.textContent.toLowerCase().includes(searchString);
+        containsString ? element.closest('.item').classList.remove('filteredText') : element.closest('.item').classList.add('filteredText');
+    });
+};
+
+
+// LOCAL STORAGE
+function saveLocalStorage() {
+    const items = Array.from(itemsList.children).map(item => ({
+        title: item.querySelector('.title').textContent,
+        text: item.querySelector('p').textContent
+    }));
+
+    localStorage.setItem('itemsList', JSON.stringify(items));
+};
+
+function loadLocalStorage() {
+    const storedItems = localStorage.getItem('itemsList');
+
+    if (storedItems) {
+        const parsedItems = JSON.parse(storedItems);
+
+        parsedItems.forEach(item => {
+            addItem(item.title, item.text);
+        });
+    }
+};

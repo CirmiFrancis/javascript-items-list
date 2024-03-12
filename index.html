@@ -20,19 +20,27 @@
             <div class="row">
                 <div class="col d-flex flex-column justify-content-start align-items-center text-start gap-3">
                     <div class="row w-100">
-                        <input id="inputTitle" type="text" maxlength="30" placeholder="Ingresa un titulo..." class="rounded">
+                        <input id="inputTitle" type="text" maxlength="30" placeholder="Ingresa un título... (máx. 30 caracteres)" class="rounded">
                     </div>
                     <div class="row w-100">
-                        <input id="inputText" type="text" maxlength="200" placeholder="Ingresa un texto..." class="rounded">
+                        <input id="inputText" type="text" maxlength="200" placeholder="Ingresa un texto... (máx. 200 caracteres)" class="rounded">
                     </div>
                 </div>
             </div>            
         </div>
-        <button class="rounded" type="button" id="btnAdd">AGREGAR ÍTEM</button>
+        <button id="btnAdd" type="button" class="rounded">AGREGAR ÍTEM</button>
     </div>
 
-    <div class="container-fluid text-center py-3">
-        <p id="divItemCount" class="border border-dark rounded d-inline-block text-light bg-black px-3 py-2 m-0">ÍTEMS: 0</p>
+    <div class="container-fluid py-3">
+        <div class="row">
+            <div class="col-7 col-md-6 text-start d-flex align-items-center">
+                <input id="searchItem" type="text" maxlength="30" placeholder="Busca el título de un ítem..." class="container-fluid rounded px-2 py-1 m-0">
+            </div>
+
+            <div class="col-5 col-md-6 text-end">
+                <p id="divItemCount" class="border border-dark rounded d-inline-block text-light bg-black px-3 py-2 m-0">ÍTEMS: 0</p>
+            </div>
+        </div>
     </div>
 
     <ul class="container-fluid text-center m-0" id="itemsList">

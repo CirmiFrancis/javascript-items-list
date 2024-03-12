@@ -2,6 +2,7 @@
 
 * {
     font-family: Montserrat;
+    transition: all 0.25s;
 }
 
 html {
@@ -10,6 +11,20 @@ html {
 
 ul {
     list-style: none;
+}
+
+#btnAdd:hover {
+    transform: scale(1.1);
+    color: white;
+    background-color: black;
+}
+
+.filteredText {
+    display: none;
+}
+
+.btnDelete:hover {
+    transform: scale(1.2);
 }
 
 .item p::first-letter {
