@@ -1,4 +1,4 @@
-A simple 'To-Do List' made by me.
+## A simple 'To-Do List'
 
 You can ADD/DELETE/SEARCH items from your list. Also, all items will be saved in your Local Storage so you don't lose them when you leave the page.
 
