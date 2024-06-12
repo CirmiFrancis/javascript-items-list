@@ -1,5 +1,7 @@
+/* ==================================== FONTS ==================================== */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
+/* ==================================== ELEMENTS ==================================== */
 * {
     font-family: Montserrat;
     transition: all 0.25s;
@@ -13,20 +15,65 @@ ul {
     list-style: none;
 }
 
+/* ==================================== IDS ==================================== */
 #btnAdd:hover {
     transform: scale(1.1);
     color: white;
     background-color: black;
 }
 
+/* ==================================== CLASSES ==================================== */
 .filteredText {
     display: none;
 }
 
-.btnDelete:hover {
+/* ITEM BUTTONS */
+.btnPalette, .btnEdit, .btnDelete {
+    background-color: transparent;
+}
+
+.btnPalette:hover, .btnEdit:hover, .btnDelete:hover {
     transform: scale(1.2);
+}
+
+/* TITLE & TEXT UPPERCASE */
+.item h3 {
+    text-transform: uppercase;
 }
 
 .item p::first-letter {
     text-transform: uppercase;
+}
+
+/* ITEM COLOR */
+.item-white {
+    background-color: white;
+}
+
+.item-gray {
+    background-color: rgb(200, 200, 200);
+}
+
+.item-red {
+    background-color: rgb(255, 175, 175);
+}
+
+.item-blue {
+    background-color: rgb(170, 175, 255);
+}
+
+.item-yellow {
+    background-color: rgb(255, 255, 175);
+}
+
+.item-green {
+    background-color: rgb(185, 255, 185);
+}
+
+.item-orange {
+    background-color: rgb(255, 190, 130);
+}
+
+.item-purple {
+    background-color: rgb(230, 165, 255);
 }
