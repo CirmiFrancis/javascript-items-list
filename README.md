@@ -9,8 +9,8 @@ Also, all items will be saved in your Local Storage so you don't lose them when 
 
 ## Update (v1.1.0) - 12 June 2024
 
-Now you can:
-* Edit the title and the text of an item
-* Change the background color of an item
-* Change the order of the items
-* Confirm if you want to delete an item
+* You can edit the title and the text of an item
+* You can change the background color of an item
+* You can change the order of the items
+* You can confirm if you want to delete an item
+* Page is now responsive!
