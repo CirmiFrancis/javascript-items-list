@@ -29,35 +29,67 @@ btnAdd.addEventListener('click', () => {
 });
 
 function addItem(title, text, boolean) {
-    const divItem = document.createElement('div');
-    divItem.innerHTML = 
+    const liItem = document.createElement('li');
+    liItem.className = 'item itemActive container-fluid mb-2 border border-dark rounded text-dark';
+    liItem.innerHTML = 
     `
-        <li class="item itemActive container-fluid mb-2 border border-dark rounded text-dark">
-            <div class="row d-flex justify-content-center align-items-center py-2">
-                <div class="col-10 col-md-11 text-start border-end border-dark">
-                    <h3 class="title overflow-auto m-0">${title}</h3>
-                    <p class="overflow-auto m-0">${text}</p>
-                </div>
-                <div class="col-2 col-md-1 d-flex justify-content-center gap-2">
-                    <button class="btnPalette d-flex align-items-center border-0 rounded p-0 fs-5">
-                        <img class="btnPalette" src="./icons/palette.svg" alt="Editar ítem." class="m-0">
-                    </button>
-                    <button class="btnEdit d-flex align-items-center border-0 rounded p-0 fs-5">
-                        <img class="btnEdit" src="./icons/edit.svg" alt="Editar ítem." class="m-0">
-                    </button>
-                    <button class="btnDelete d-flex align-items-center border-0 rounded p-0 fs-5">
-                        <img class="btnDelete" src="./icons/delete.svg" alt="Eliminar ítem.">
-                    </button>
-                </div>
+        <div class="row d-flex justify-content-center align-items-center py-2">
+
+            <div class="col-2 col-md-1 d-flex flex-column justify-content-center align-items-center fs-3">
+                <button class="btnMoveUp p-0">↑</button>
+                <button class="btnMoveDown p-0">↓</button>
             </div>
-        </li>
+
+            <div class="col-8 col-md-9 text-start border-start border-end border-dark">
+                <h3 class="title overflow-auto m-0">${title}</h3>
+                <p class="overflow-auto m-0">${text}</p>
+            </div>
+
+            <div class="col-2 col-md-2 d-flex flex-column flex-sm-row justify-content-center align-items-center gap-1 gap-sm-2 gap-lg-4">
+                <button class="btnPalette d-flex align-items-center border-0 rounded p-0 fs-5">
+                    <img class="btnPalette" src="./icons/palette.svg" alt="Editar ítem." class="m-0">
+                </button>
+                <button class="btnEdit d-flex align-items-center border-0 rounded p-0 fs-5">
+                    <img class="btnEdit" src="./icons/edit.svg" alt="Editar ítem." class="m-0">
+                </button>
+                <button class="btnDelete d-flex align-items-center border-0 rounded p-0 fs-5">
+                    <img class="btnDelete" src="./icons/delete.svg" alt="Eliminar ítem.">
+                </button>
+            </div>
+        </div>
+
     `;
-    itemsList.appendChild(divItem);
+    itemsList.appendChild(liItem);
     inputTitle.value = '';
     inputText.value = '';
     lengthItems();
     boolean ? sweetAlert("Ítem agregado.", "success") : '';
 };
+
+// CHANGE ORDER
+itemsList.addEventListener('click', (e) => {
+    if (e.target.classList.contains('btnMoveUp')) {
+        //console.log('click up')
+        const currentItem = e.target.closest('.item');
+        const previousItem = currentItem.previousElementSibling;
+        //console.log(previousItem)
+        if (previousItem) {
+            itemsList.insertBefore(currentItem, previousItem);
+            saveLocalStorage(); 
+        }
+    }
+
+    if (e.target.classList.contains('btnMoveDown')) {
+        //console.log('click down')
+        const currentItem = e.target.closest('.item');
+        const nextItem = currentItem.nextElementSibling;
+        //console.log(nextItem)
+        if (nextItem) {
+            itemsList.insertBefore(nextItem, currentItem);
+            saveLocalStorage(); 
+        }
+    }
+});
 
 // CHANGE ITEM COLOR
 itemsList.addEventListener('click', async (e) => {
@@ -143,10 +175,19 @@ itemsList.addEventListener('click', async (e) => {
 // REMOVE ITEM
 itemsList.addEventListener('click', (e) => {
     if (e.target.classList.contains('btnDelete')) {
-        e.target.closest('.item').parentElement.remove();
-        saveLocalStorage();
-        lengthItems();
-        sweetAlert("Ítem eliminado.", "error");
+        Swal.fire({
+            title: "¿Eliminar este ítem?",
+            confirmButtonText: "Eliminar",
+            showDenyButton: true,
+            denyButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                e.target.closest('.item').remove();
+                saveLocalStorage();
+                lengthItems();
+                sweetAlert("Ítem eliminado.", "error");
+            } 
+        });
     }
 });
 
@@ -176,10 +217,9 @@ function search(searchString) {
 // LOCAL STORAGE
 function saveLocalStorage() {
     const items = Array.from(itemsList.children).map(item => {
-        const li = item.firstElementChild;
-        const classes = Array.from(li.classList);
+        const classes = Array.from(item.classList);
         const colorClass = classes.find(className => className.startsWith('item-'));
-        
+
         return {
             title: item.querySelector('.title').textContent,
             text: item.querySelector('p').textContent,
@@ -199,7 +239,7 @@ function loadLocalStorage() {
         parsedItems.forEach(item => {
             addItem(item.title, item.text, false);
 
-            const lastItemColor = itemsList.lastElementChild.firstElementChild;
+            const lastItemColor = itemsList.lastElementChild;
             lastItemColor.classList.add(item.color);
         });
     }

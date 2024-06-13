@@ -12,3 +12,5 @@ Also, all items will be saved in your Local Storage so you don't lose them when 
 Now you can:
 * Edit the title and the text of an item
 * Change the background color of an item
+* Change the order of the items
+* Confirm if you want to delete an item
