@@ -1,4 +1,4 @@
-# Item List
+# Items List
 
 You can ADD/EDIT/DELETE/SEARCH items from your list. You can change the background color and change the order of the items too! 
 
