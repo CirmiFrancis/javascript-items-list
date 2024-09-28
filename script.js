@@ -150,7 +150,11 @@ itemsList.addEventListener('click', async (e) => {
         const { value: editedTitle } = await Swal.fire({
             title: "Título",
             input: "text",
-            inputPlaceholder: title,
+            inputValue: title,
+            inputPlaceholder: "Ingresa un Título... (máx. 30 caracteres)",
+            inputAttributes: {
+                maxlength: 30
+            },
             showCloseButton: true
         });
         editedTitle ? item.querySelector('h3').textContent = editedTitle : '';
@@ -158,8 +162,10 @@ itemsList.addEventListener('click', async (e) => {
         const { value: editedText } = await Swal.fire({
             title: "Texto",
             input: "textarea",
-            inputPlaceholder: text,
+            inputValue: text,
+            inputPlaceholder: "Ingresa un Texto... (máx. 200 caracteres)",
             inputAttributes: {
+                maxlength: 200,
                 style: "resize: none;"
             },
             showCloseButton: true
@@ -176,7 +182,7 @@ itemsList.addEventListener('click', async (e) => {
 itemsList.addEventListener('click', (e) => {
     if (e.target.classList.contains('btnDelete')) {
         Swal.fire({
-            title: "¿Eliminar este ítem?",
+            title: "¿Eliminar este Ítem?",
             confirmButtonText: "Eliminar",
             showDenyButton: true,
             denyButtonText: 'Cancelar'
